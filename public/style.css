@@ -1,0 +1,521 @@
+:root {
+    --ge-green: #10B981;
+    --ge-blue: #0F4C81;
+    --ge-light-bg: #F9FAFB;
+    --ge-dark-bg: #121212;
+    --ge-dark-surface: #1E1E1E;
+    --text-light: #EAEAEA;
+    --text-muted-light: #CFCFCF;
+    --text-dark: #111;
+}
+
+/* Header Styling */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    z-index: 1030;
+}
+
+.nav-link {
+    font-weight: 600;
+    color: var(--ge-blue) !important;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--ge-green) !important;
+    border-bottom: 2px solid var(--ge-green);
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ge-green);
+}
+
+/* Main Content Styling */
+main section {
+    padding: 80px 0;
+    min-height: 80vh;
+}
+
+/* Hero Section */
+#home-section {
+    padding: 150px 0 100px;
+    background: linear-gradient(rgba(15, 76, 129, 0.8), rgba(16, 185, 129, 0.8)), url('https://i.ytimg.com/vi/j_WIoUqYE-I/maxresdefault.jpg') center/cover;
+    color: white;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.btn-ge-primary {
+    background-color: var(--ge-green);
+    border-color: var(--ge-green);
+    color: white;
+    font-weight: 600;
+    padding: 10px 30px;
+    transition: background-color 0.3s, transform 0.3s;
+    border-radius: 8px;
+}
+
+.btn-ge-primary:hover {
+    background-color: #0E9F76;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-ge-secondary {
+    background-color: transparent;
+    border: 2px solid green;
+    color: white;
+    font-weight: 600;
+    padding: 10px 30px;
+    transition: background-color 0.3s;
+    border-radius: 8px;
+}
+
+.btn-ge-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* General Section Styling */
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--ge-blue);
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* Footer Styling */
+footer {
+    background-color: var(--ge-blue);
+    color: white;
+    padding: 30px 0;
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: var(--ge-green);
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #fff;
+}
+
+/* Project Card Styling */
+.project-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.carousel-item img {
+    border-radius: 8px;
+}
+
+/* Visibility for fade-in effect */
+.fade-in-on-scroll {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.team-member-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center; 
+    border: 3px solid var(--ge-green);
+}
+
+/*LIGHT THEME FIXES*/
+body {
+    background-color: #fff;
+    color: var(--text-dark);
+}
+.text-muted {
+    color: #444 !important;
+}
+.card,
+.accordion-item {
+    background-color: #fff;
+    color: var(--text-dark);
+}
+
+/* DARK MODE MAIN */
+body.dark-mode {
+    background-color: var(--ge-dark-bg);
+    color: var(--text-light);
+}
+
+/* Заголовки */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+    color: #F2F2F2 !important;
+}
+
+/* Параграфы и вспомогательный текст */
+body.dark-mode p,
+body.dark-mode small,
+body.dark-mode .text-muted {
+    color: var(--text-muted-light) !important;
+}
+
+/* Navbar */
+body.dark-mode .navbar {
+    background-color: rgba(25, 25, 25, 0.95);
+    box-shadow: 0 2px 4px rgba(255,255,255,0.05);
+}
+body.dark-mode .nav-link {
+    color: #E4E6EB !important;
+}
+body.dark-mode .nav-link:hover {
+    color: var(--ge-green) !important;
+}
+
+/* Hero Section */
+body.dark-mode #home-section {
+    background: linear-gradient(rgba(10, 40, 70, 0.85), rgba(8, 50, 35, 0.85)),
+    url('https://i.ytimg.com/vi/j_WIoUqYE-I/maxresdefault.jpg') center/cover;
+    color: #EAEAEA;
+}
+
+/* CTA (блок "Готовы к прозрачным инвестициям") */
+body.dark-mode .bg-light,
+body.dark-mode .bg-ge-light-bg {
+    background-color: #181818 !important;
+    color: #EAEAEA !important;
+}
+body.dark-mode .bg-light p {
+    color: #D0D0D0 !important;
+}
+
+/* Карточки проектов */
+body.dark-mode .project-card {
+    background-color: #1C1C1C;
+    color: #F0F0F0 !important;
+}
+body.dark-mode .card-body,
+body.dark-mode .card-text,
+body.dark-mode .card-title {
+    color: #F0F0F0 !important;
+}
+body.dark-mode .btn-outline-ge-green,
+body.dark-mode .btn-outline-secondary,
+body.dark-mode .btn-outline-primary {
+    color: #EAEAEA !important;
+    border-color: #EAEAEA !important;
+}
+body.dark-mode .btn-outline-ge-green:hover,
+body.dark-mode .btn-outline-secondary:hover {
+    background-color: rgba(234,234,234,0.1);
+}
+
+/* Аккордеон (How It Works) */
+body.dark-mode .accordion-item,
+body.dark-mode .accordion-button {
+    background-color: #1E1E1E !important;
+    color: #EAEAEA !important;
+}
+body.dark-mode .accordion-button:not(.collapsed) {
+    background-color: #2A2A2A !important;
+    color: #F2F2F2 !important;
+    box-shadow: none;
+}
+
+body.dark-mode #how-it-works .p-4 p {
+    color: #111!important;
+}
+
+/* Team section */
+body.dark-mode .team-member {
+    background-color: #1C1C1C !important;
+    color: #EAEAEA !important;
+}
+body.dark-mode .team-member p.text-muted {
+    color: #CFCFCF !important;
+}
+body.dark-mode .team-member-img {
+    filter: brightness(0.85) contrast(1.1);
+}
+
+/* Contact form */
+body.dark-mode label {
+    color: #EAEAEA !important;
+}
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background-color: #1A1A1A !important;
+    color: #F0F0F0 !important;
+    border-color: #2C2C2C !important;
+}
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #9A9A9A !important;
+}
+body.dark-mode .form-control:focus {
+    border-color: var(--ge-green);
+    box-shadow: 0 0 0 0.2rem rgba(16,185,129,0.25);
+}
+
+/* Footer */
+body.dark-mode footer {
+    background-color: #0A0A0A;
+    color: #CCC;
+}
+body.dark-mode footer a {
+    color: var(--ge-green);
+}
+body.dark-mode footer a:hover {
+    color: #fff;
+}
+
+/* === Project Modal Fix (Dark Mode) === */
+body.dark-mode #projectModal .modal-content {
+    background-color: #1C1C1C !important;
+    color: #EAEAEA !important;
+}
+
+body.dark-mode #projectModal .modal-header {
+    background-color: var(--ge-blue) !important;
+    color: #fff !important;
+}
+
+body.dark-mode #projectModal h5,
+body.dark-mode #projectModal h6 {
+    color: #F2F2F2 !important;
+}
+
+body.dark-mode #projectModal p,
+body.dark-mode #projectModal li {
+    color: #DADADA !important;
+}
+
+/* Зеленая success-плашка */
+body.dark-mode #projectModal .alert-success {
+    background-color: rgba(16,185,129,0.15) !important;
+    color: #A5F3C0 !important;
+    border-color: rgba(16,185,129,0.3) !important;
+}
+
+/* Прогресс-бар */
+body.dark-mode #projectModal .progress {
+    background-color: #333 !important;
+}
+body.dark-mode #projectModal .progress-bar {
+    background-color: var(--ge-green) !important;
+    color: #fff;
+}
+
+/* Кнопки */
+body.dark-mode #projectModal .btn-outline-secondary {
+    color: #EAEAEA !important;
+    border-color: #EAEAEA !important;
+}
+body.dark-mode #projectModal .btn-outline-secondary:hover {
+    background-color: rgba(234,234,234,0.1);
+}
+
+body.dark-mode #projectModal .btn-ge-primary {
+    background-color: var(--ge-green) !important;
+    color: #fff !important;
+    border: none;
+}
+body.dark-mode #projectModal .btn-ge-primary:hover {
+    background-color: #0E9F76 !important;
+}
+
+/* Карточка с графиком */
+body.dark-mode #projectModal .border {
+    border-color: #2F2F2F !important;
+    background-color: #1A1A1A !important;
+}
+body.dark-mode #projectModal .border img {
+    filter: brightness(0.9) contrast(1.05);
+}
+
+/* Иконки */
+body.dark-mode #projectModal i {
+    color: var(--ge-green) !important;
+}
+
+/* === Demo Modal Fix (Dark Mode) === */
+body.dark-mode #demoModal .modal-content {
+    background-color: #1C1C1C !important;
+    color: #EAEAEA !important;
+}
+
+body.dark-mode #demoModal .modal-header {
+    background-color: var(--ge-green) !important;
+    color: #fff !important;
+}
+
+body.dark-mode #demoModal label,
+body.dark-mode #demoModal p {
+    color: #EAEAEA !important;
+}
+
+body.dark-mode #demoModal input {
+    background-color: #1A1A1A !important;
+    color: #F0F0F0 !important;
+    border-color: #2C2C2C !important;
+}
+
+body.dark-mode #demoModal input::placeholder {
+    color: #9A9A9A !important;
+}
+
+body.dark-mode #demoModal button {
+    background-color: var(--ge-blue) !important;
+    color: #fff !important;
+    border: none;
+}
+
+body.dark-mode #demoModal button:hover {
+    background-color: #166099 !important;
+}
+
+/*FIX: "Запросить демо" кнопка и видимость*/
+
+/* Светлая тема */
+#demoModal .modal-content {
+    background-color: #fff !important;
+    color: #111 !important;
+}
+#demoModal .modal-header h5 {
+    color: var(--ge-blue) !important;
+    font-weight: 700;
+}
+#demoModal label,
+#demoModal p {
+    color: #222 !important;
+}
+#demoModal input {
+    background-color: #fff !important;
+    border: 1px solid #ccc !important;
+    color: #111 !important;
+}
+#demoModal input::placeholder {
+    color: #777 !important;
+}
+
+/* Кнопка “Запросить” — видимая и с рамкой */
+#demoModal button {
+    background-color: var(--ge-green) !important;
+    color: #fff !important;
+    border: 2px solid var(--ge-green) !important;
+    border-radius: 8px;
+    padding: 8px 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+#demoModal button:hover {
+    background-color: #0E9F76 !important;
+    border-color: #0E9F76 !important;
+}
+
+/*Тёмная тема: “Запросить демо”*/
+body.dark-mode #demoModal .modal-header h5 {
+    color: #fff !important;
+}
+body.dark-mode #demoModal button {
+    background-color: var(--ge-blue) !important;
+    border: 2px solid var(--ge-blue) !important;
+    color: #fff !important;
+}
+body.dark-mode #demoModal button:hover {
+    background-color: #166099 !important;
+}
+
+/*FIX: Project Modal header и кнопки*/
+#projectModal .modal-header h5 {
+    color: var(--ge-blue) !important;
+    font-weight: 700;
+}
+#projectModal .modal-header {
+    border-bottom: 2px solid rgba(0,0,0,0.05);
+}
+body.dark-mode #projectModal .modal-header {
+    background-color: var(--ge-blue) !important;
+    border-bottom: none;
+}
+body.dark-mode #projectModal .modal-header h5 {
+    color: #fff !important;
+}
+
+/* Кнопки в модалке Project */
+#projectModal .btn-outline-secondary {
+    border: 2px solid #ccc !important;
+    color: #333 !important;
+    font-weight: 600;
+    border-radius: 8px;
+}
+#projectModal .btn-outline-secondary:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+#projectModal .btn-ge-primary {
+    background-color: var(--ge-green) !important;
+    border: 2px solid var(--ge-green);
+    color: #fff !important;
+    font-weight: 600;
+    border-radius: 8px;
+}
+#projectModal .btn-ge-primary:hover {
+    background-color: #0E9F76 !important;
+    border-color: #0E9F76 !important;
+}
+
+
+/* Smooth transition for theme toggle */
+body,
+.navbar,
+.card,
+footer,
+.accordion-item,
+.form-control {
+    transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+/* Main Content Styling */
+main section {
+    padding: 80px 0;
+    min-height: auto;
+}
+
+#home {
+    padding: 0;
+    min-height: auto;
+}
+
+#home-section {
+    padding: 120px 0 80px;
+}
+
+.fade-in-on-scroll {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}

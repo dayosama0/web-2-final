@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GEvidence — Auth</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="../style.css" rel="stylesheet">
+
+  <style>
+    body { font-family: "Montserrat", sans-serif; }
+    .auth-wrap { min-height: 100vh; display: flex; align-items: center; }
+    .auth-card { max-width: 520px; margin: 0 auto; }
+  </style>
+</head>
+<body class="bg-ge-light-bg">
+
+  <div class="auth-wrap">
+    <div class="container py-5">
+      <div class="auth-card card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4 p-md-5">
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h3 class="mb-0 fw-bold text-ge-blue">GEvidence</h3>
+              <small class="text-muted">Login / Register</small>
+            </div>
+            <a class="btn btn-sm btn-outline-secondary" href="/">
+              <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
+          </div>
+
+          <div id="authError" class="alert alert-danger d-none"></div>
+          <div id="authSuccess" class="alert alert-success d-none"></div>
+
+          <ul class="nav nav-pills mb-4" id="authTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="login-tab" data-bs-toggle="pill" data-bs-target="#login-pane" type="button" role="tab">
+                Login
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="register-tab" data-bs-toggle="pill" data-bs-target="#register-pane" type="button" role="tab">
+                Register
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <!-- LOGIN -->
+            <div class="tab-pane fade show active" id="login-pane" role="tabpanel">
+              <form id="loginForm">
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control" id="loginEmail" placeholder="name@domain.com" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Password</label>
+                  <input type="password" class="form-control" id="loginPassword" placeholder="******" required>
+                </div>
+                <button class="btn btn-ge-primary w-100" type="submit">
+                  <i class="fas fa-right-to-bracket me-2"></i> Login
+                </button>
+              </form>
+            </div>
+
+            <!-- REGISTER -->
+            <div class="tab-pane fade" id="register-pane" role="tabpanel">
+              <form id="registerForm">
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control" id="regEmail" placeholder="name@domain.com" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Password (min 6)</label>
+                  <input type="password" class="form-control" id="regPassword" placeholder="******" minlength="6" required>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Role</label>
+                  <select class="form-select" id="regRole">
+                    <option value="user" selected>User</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                  <small class="text-muted">Admin registration requires a key.</small>
+                </div>
+
+                <div class="mb-3 d-none" id="adminKeyGroup">
+                  <label class="form-label">Admin key</label>
+                  <input type="password" class="form-control" id="adminKey" placeholder="enter key">
+                </div>
+
+                <button class="btn btn-ge-secondary w-100" type="submit">
+                  <i class="fas fa-user-plus me-2"></i> Create account
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="text-muted">Token saved in localStorage</small>
+            <button class="btn btn-sm btn-outline-danger" id="logoutBtn" type="button">
+              <i class="fas fa-arrow-right-from-bracket me-1"></i> Logout
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="auth.page.js"></script>
+</body>
+</html>

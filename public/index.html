@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GEvidence – Admin Panel</title>
+
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 980px; margin: 28px auto; padding: 0 16px; }
+    h1 { margin: 0 0 6px; }
+    .muted { color:#666; margin-top:0; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom: 18px; }
+    .btn { padding:10px 14px; border-radius:10px; border:0; cursor:pointer; }
+    .btn-danger { background:#b00020; color:#fff; }
+    .btn-primary { background:#0F4C81; color:#fff; }
+    .btn-secondary { background:#eee; color:#111; }
+    form { display:grid; gap:10px; margin: 18px 0 24px; padding: 14px; border: 1px solid #ddd; border-radius: 12px; }
+    input, select { padding: 10px; border-radius: 10px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; }
+    .row { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .card { border:1px solid #eee; border-radius:12px; padding:12px; margin-bottom:10px; }
+    .small { font-size:12px; color:#777; }
+    .error { color:#b00020; white-space:pre-wrap; }
+    .ok { color:#0b7a2b; white-space:pre-wrap; }
+    .statusBox { min-width: 230px; }
+    .statusBox select { margin-top: 6px; }
+    .statusBox button { width:100%; margin-top:8px; }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div>
+      <h1>GEvidence – Admin Panel</h1>
+      <p class="muted">Only admin can access this page. Manage verification cases, update status, issue NFT certificates (mock).</p>
+    </div>
+    <button id="logoutBtn" class="btn btn-danger">Logout</button>
+  </div>
+
+  <h2>Create Verification Case</h2>
+
+  <form id="caseForm">
+    <div class="row">
+      <input id="title" placeholder="Title (required)" required />
+      <input id="orgId" placeholder="orgId (required)" required />
+    </div>
+
+    <div class="row">
+      <input id="country" placeholder="Country (required)" required />
+      <input id="city" placeholder="City (required)" required />
+    </div>
+
+    <div class="row">
+      <input id="metricKey" placeholder="Metric key (required) e.g. renewable_kwh" required />
+      <input id="metricUnit" placeholder="Metric unit (required) e.g. kWh" required />
+    </div>
+
+    <div class="row">
+      <input id="periodFrom" placeholder="Period from (YYYY-MM-DD)" required />
+      <input id="periodTo" placeholder="Period to (YYYY-MM-DD)" required />
+    </div>
+
+    <div class="row">
+      <input id="standard" placeholder="Methodology standard (required) e.g. GHG Protocol" required />
+      <input id="approach" placeholder="Methodology approach (required)" required />
+    </div>
+
+    <select id="status">
+      <option value="draft">draft</option>
+      <option value="in_review">in_review</option>
+      <option value="verified">verified</option>
+      <option value="rejected">rejected</option>
+    </select>
+
+    <button class="btn btn-primary" type="submit">Create Case</button>
+
+    <div id="err" class="error"></div>
+    <div id="ok" class="ok"></div>
+  </form>
+
+  <h2>Cases</h2>
+  <div id="list"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const TOKEN_KEY = "ge_token";
+      const USER_KEY = "ge_user";
+
+      const token = localStorage.getItem(TOKEN_KEY);
+      let user = null;
+      try { user = JSON.parse(localStorage.getItem(USER_KEY) || "null"); } catch {}
+
+      // ✅ protect page
+      if (!token || !user || user.role !== "admin") {
+        window.location.href = "/auth.html";
+        return;
+      }
+
+      const logoutBtn = document.getElementById("logoutBtn");
+      const form = document.getElementById("caseForm");
+      const list = document.getElementById("list");
+      const errBox = document.getElementById("err");
+      const okBox = document.getElementById("ok");
+
+      function setError(msg) {
+        if (okBox) okBox.textContent = "";
+        if (errBox) errBox.textContent = msg || "";
+      }
+      function setOk(msg) {
+        if (errBox) errBox.textContent = "";
+        if (okBox) okBox.textContent = msg || "";
+      }
+
+      function logout() {
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(USER_KEY);
+        window.location.href = "/auth.html";
+      }
+
+      if (logoutBtn) logoutBtn.addEventListener("click", logout);
+
+      async function loadCases() {
+        setError("");
+        if (!list) return;
+
+        const res = await fetch("/cases");
+        const data = await res.json();
+
+        list.innerHTML = "";
+
+        if (!Array.isArray(data) || data.length === 0) {
+          list.innerHTML = "<p class='muted'>No cases yet. Create the first one.</p>";
+          return;
+        }
+
+        for (const c of data) {
+          const card = document.createElement("div");
+          card.className = "card";
+
+          const cert = c.nftCertificate;
+          const certHtml = cert ? `
+            <div class="small" style="margin-top:8px;">
+              <b>NFT certificate:</b>
+              tokenId=${cert.tokenId} • status=${cert.status}<br/>
+              txHash=${cert.txHash}<br/>
+              network=${cert.network} • contract=${cert.contractAddress}
+            </div>
+          ` : "";
+
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; gap:12px; align-items:flex-start;">
+              <div style="flex:1;">
+                <div><strong>${escapeHtml(c.title)}</strong></div>
+                <div class="small">ID: ${c._id}</div>
+                <div class="small">orgId: ${escapeHtml(c.orgId)}</div>
+                <div class="small">metric: ${escapeHtml(c.metric?.key || "")} (${escapeHtml(c.metric?.unit || "")})</div>
+                <div class="small">site: ${escapeHtml(c.site?.country || "")}, ${escapeHtml(c.site?.city || "")}</div>
+                <div class="small"><b>current status:</b> ${escapeHtml(c.status)}</div>
+                ${certHtml}
+              </div>
+
+              <div class="statusBox">
+                <div class="small"><b>Change status</b></div>
+                <select data-status-select="${c._id}">
+                  ${["draft","in_review","verified","rejected"].map(s => `
+                    <option value="${s}" ${c.status === s ? "selected" : ""}>${s}</option>
+                  `).join("")}
+                </select>
+                <button class="btn btn-secondary" data-status-btn="${c._id}">Update status</button>
+              </div>
+            </div>
+          `;
+
+          list.appendChild(card);
+        }
+
+        document.querySelectorAll("[data-status-btn]").forEach(btn => {
+          btn.addEventListener("click", async () => {
+            const id = btn.getAttribute("data-status-btn");
+            const select = document.querySelector(`[data-status-select="${id}"]`);
+            if (!select) return;
+
+            const newStatus = select.value;
+
+            const res = await fetch(`/cases/${id}/status`, {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+              },
+              body: JSON.stringify({ status: newStatus })
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+              setError(JSON.stringify(data, null, 2));
+              return;
+            }
+
+            setOk("Status updated.");
+            await loadCases();
+          });
+        });
+      }
+
+      function isoDateOrThrow(v) {
+        const s = String(v || "").trim();
+        // allow YYYY-MM-DD only (simple)
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) throw new Error("Date must be YYYY-MM-DD");
+        const d = new Date(s);
+        if (isNaN(d.getTime())) throw new Error("Invalid date");
+        return d.toISOString();
+      }
+
+      function escapeHtml(str) {
+        return String(str ?? "")
+          .replaceAll("&","&amp;")
+          .replaceAll("<","&lt;")
+          .replaceAll(">","&gt;")
+          .replaceAll('"',"&quot;")
+          .replaceAll("'","&#039;");
+      }
+
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          setError("");
+          setOk("");
+
+          try {
+            const payload = {
+              title: document.getElementById("title").value.trim(),
+              orgId: document.getElementById("orgId").value.trim(),
+              site: {
+                country: document.getElementById("country").value.trim(),
+                city: document.getElementById("city").value.trim()
+              },
+              metric: {
+                key: document.getElementById("metricKey").value.trim(),
+                unit: document.getElementById("metricUnit").value.trim()
+              },
+              period: {
+                from: isoDateOrThrow(document.getElementById("periodFrom").value),
+                to: isoDateOrThrow(document.getElementById("periodTo").value)
+              },
+              methodology: {
+                standard: document.getElementById("standard").value.trim(),
+                approach: document.getElementById("approach").value.trim()
+              },
+              status: document.getElementById("status").value
+            };
+
+            const res = await fetch("/cases", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+              },
+              body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+            if (!res.ok) {
+              setError(JSON.stringify(data, null, 2));
+              return;
+            }
+
+            form.reset();
+            setOk("Case created.");
+            await loadCases();
+          } catch (err) {
+            setError(err?.message || "Error");
+          }
+        });
+      }
+
+      loadCases();
+    });
+  </script>
+</body>
+</html>
