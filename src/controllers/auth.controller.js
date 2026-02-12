@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { JWT_SECRET, JWT_EXPIRES_IN } = require("../config/jwt");
 
-const ADMIN_REGISTER_KEY = process.env.ADMIN_REGISTER_KEY || "qwerty";
+const ADMIN_REGISTER_KEY = process.env.ADMIN_REGISTER_KEY;
 
 function signToken(user) {
   return jwt.sign(
